@@ -1,5 +1,7 @@
 package com.github.yukihane.jpa_template.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,7 +11,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
 @Entity
-public class Head {
+public class Head implements Serializable {
+
+    private static final long serialVersionUID = -6923936109860220970L;
 
     @Id
     @GeneratedValue

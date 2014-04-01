@@ -13,6 +13,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import com.github.yukihane.jpa_template.entity.Bridge;
+import com.github.yukihane.jpa_template.entity.Child1;
+import com.github.yukihane.jpa_template.entity.Child2;
 import com.github.yukihane.jpa_template.entity.Head;
 import com.github.yukihane.jpa_template.entity.OptionalBranch;
 
@@ -68,6 +70,9 @@ public class App {
 
     private void operateEntities(EntityManager em) {
 
+        Child1 c1 = new Child1("c1");
+        Child2 c2 = new Child2("c2");
+
         Bridge b = new Bridge();
         b.setName("bridge1");
 
@@ -77,6 +82,8 @@ public class App {
         Head h = new Head();
         h.setName("myname1");
 
+        b.addParents(c1);
+        b.addParents(c2);
         h.setBridge(b);
         h.setOptionalBranch(ob);
 

@@ -1,5 +1,7 @@
 package com.github.yukihane.jpa_template.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -8,7 +10,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
 @Entity
-public class OptionalBranch {
+public class OptionalBranch implements Serializable {
+
+    private static final long serialVersionUID = 4070110373063847883L;
 
     @Id
     @GeneratedValue
