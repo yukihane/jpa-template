@@ -3,7 +3,7 @@ package com.github.yukihane.jpa_template;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
-import com.github.yukihane.jpa_template.entity.Parent;
+import com.github.yukihane.jpa_template.entity.Head;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -40,11 +40,11 @@ public class AppTest extends TestCase {
         try {
             em.getTransaction().begin();
             
-            Parent p = new Parent();
+            Head p = new Head();
             p.setName("myname");
             em.persist(p);
 
-            Parent p2 = new Parent();
+            Head p2 = new Head();
             p2.setName("myname2");
             em.persist(p2);
 
