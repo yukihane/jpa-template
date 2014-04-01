@@ -1,18 +1,34 @@
 package com.github.yukihane.jpa_template;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
+import com.github.yukihane.jpa_template.entity.Bridge;
 import com.github.yukihane.jpa_template.entity.Head;
+import com.github.yukihane.jpa_template.entity.OptionalBranch;
 
 /**
  * Hello world!
  * 
  */
 public class App {
+    
+    private long id;
+    
     public static void main(String[] args) {
-        new App().run();
-        System.exit(0);
+        try {
+            new App().run();
+        } finally {
+            System.exit(0);
+        }
     }
 
     public void run() {
@@ -21,15 +37,11 @@ public class App {
 
         try {
             em.getTransaction().begin();
-
-            Head p = new Head();
-            p.setName("myname");
-            em.persist(p);
-
-            Head p2 = new Head();
-            p2.setName("myname2");
-            em.persist(p2);
-
+            operateEntities(em);
+            em.getTransaction().commit();
+            
+            em.getTransaction().begin();
+            queryEntities(em);
             em.getTransaction().commit();
         } finally {
             if (em.getTransaction().isActive()) {
@@ -39,5 +51,41 @@ public class App {
             em.close();
         }
 
+    }
+
+    private  void operateEntities(EntityManager em) {
+
+        Bridge b = new Bridge();
+        b.setName("bridge1");
+
+        OptionalBranch ob = new OptionalBranch();
+        ob.setName("optional bridge 1");
+
+        Head h = new Head();
+        h.setName("myname1");
+
+        h.setBridge(b);
+        h.setOptionalBranch(ob);
+
+        em.persist(h);
+        
+        this.id = h.getId();
+
+    }
+
+    private  void queryEntities(EntityManager em) {
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Head> cq = cb.createQuery(Head.class);
+        Root<Head> head = cq.from(Head.class);
+        cq.select(head);
+        Path<Long> id = head.<Long>get("id");
+        Predicate idExp = cb.equal(id, this.id);
+        cq.where(idExp);
+        
+        TypedQuery<Head> q = em.createQuery(cq);
+        List<Head> l = q.getResultList();
+        
+        System.out.println(l.get(0).getName());
     }
 }
