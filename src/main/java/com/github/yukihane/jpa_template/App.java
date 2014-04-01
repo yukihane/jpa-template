@@ -103,7 +103,7 @@ public class App {
         Predicate idExp = cb.equal(id, this.id);
         cq.where(idExp);
 
-        head.fetch("bridge");
+        head.fetch("bridge").fetch("parents", JoinType.LEFT);
         head.fetch("optionalBranch", JoinType.LEFT);
 
         TypedQuery<Head> q = em.createQuery(cq);
