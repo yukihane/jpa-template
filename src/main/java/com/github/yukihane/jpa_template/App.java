@@ -7,6 +7,7 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -94,6 +95,9 @@ public class App {
         Path<Long> id = head.<Long> get("id");
         Predicate idExp = cb.equal(id, this.id);
         cq.where(idExp);
+
+        head.fetch("bridge");
+        head.fetch("optionalBranch", JoinType.LEFT);
 
         TypedQuery<Head> q = em.createQuery(cq);
         List<Head> l = q.getResultList();
