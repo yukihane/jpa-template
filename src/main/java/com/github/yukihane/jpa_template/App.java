@@ -20,12 +20,14 @@ import com.github.yukihane.jpa_template.entity.OptionalBranch;
  * 
  */
 public class App {
-    
+
     private long id;
-    
+
     public static void main(String[] args) {
         try {
             new App().run();
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             System.exit(0);
         }
@@ -39,7 +41,18 @@ public class App {
             em.getTransaction().begin();
             operateEntities(em);
             em.getTransaction().commit();
-            
+        } finally {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+
+            em.close();
+        }
+
+        em = Persistence.createEntityManagerFactory("JPAUNIT")
+                .createEntityManager();
+
+        try {
             em.getTransaction().begin();
             queryEntities(em);
             em.getTransaction().commit();
@@ -50,10 +63,9 @@ public class App {
 
             em.close();
         }
-
     }
 
-    private  void operateEntities(EntityManager em) {
+    private void operateEntities(EntityManager em) {
 
         Bridge b = new Bridge();
         b.setName("bridge1");
@@ -68,24 +80,24 @@ public class App {
         h.setOptionalBranch(ob);
 
         em.persist(h);
-        
+
         this.id = h.getId();
 
     }
 
-    private  void queryEntities(EntityManager em) {
-        
+    private void queryEntities(EntityManager em) {
+
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Head> cq = cb.createQuery(Head.class);
         Root<Head> head = cq.from(Head.class);
         cq.select(head);
-        Path<Long> id = head.<Long>get("id");
+        Path<Long> id = head.<Long> get("id");
         Predicate idExp = cb.equal(id, this.id);
         cq.where(idExp);
-        
+
         TypedQuery<Head> q = em.createQuery(cq);
         List<Head> l = q.getResultList();
-        
-        System.out.println(l.get(0).getName());
+
+        System.out.println(l.get(0).getBridge().getName());
     }
 }
