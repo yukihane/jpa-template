@@ -15,6 +15,8 @@ import javax.persistence.criteria.Root;
 import com.github.yukihane.jpa_template.entity.Bridge;
 import com.github.yukihane.jpa_template.entity.Child1;
 import com.github.yukihane.jpa_template.entity.Child2;
+import com.github.yukihane.jpa_template.entity.Cusp;
+import com.github.yukihane.jpa_template.entity.Emb;
 import com.github.yukihane.jpa_template.entity.Head;
 import com.github.yukihane.jpa_template.entity.OptionalBranch;
 
@@ -70,6 +72,10 @@ public class App {
 
     private void operateEntities(EntityManager em) {
 
+        Cusp cusp = new Cusp("cusp1");
+
+        Emb emb = new Emb("emb1");
+
         Child1 c1 = new Child1("c1");
         Child2 c2 = new Child2("c2");
 
@@ -82,6 +88,8 @@ public class App {
         Head h = new Head();
         h.setName("myname1");
 
+        emb.setCusp(cusp);
+        c1.setEmb(emb);
         b.addParents(c1);
         b.addParents(c2);
         h.setBridge(b);
