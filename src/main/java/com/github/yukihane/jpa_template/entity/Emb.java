@@ -7,6 +7,10 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.FetchMode;
+
+import org.hibernate.annotations.Fetch;
+
 @Embeddable
 public class Emb implements Serializable {
 
@@ -14,6 +18,7 @@ public class Emb implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "CUSP_ID", referencedColumnName = "ID")
+    @Fetch(FetchMode.JOIN)
     private Cusp cusp;
 
     private String embProperty;

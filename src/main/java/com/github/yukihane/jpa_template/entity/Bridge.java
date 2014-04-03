@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.BatchSize;
+
 @Entity
 public class Bridge implements Serializable {
 
@@ -31,6 +33,7 @@ public class Bridge implements Serializable {
     private Head head;
 
     @OneToMany(mappedBy = "bridge", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @BatchSize(size=16)
     private Set<Parent> parents = new HashSet<Parent>();
 
     private String name;
