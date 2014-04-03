@@ -1,12 +1,16 @@
 package com.github.yukihane.jpa_template.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Version;
 
 @Entity
-public class Cusp {
+public class Cusp implements Serializable {
+
+    private static final long serialVersionUID = 8022003746201894737L;
 
     @Id
     @GeneratedValue
